@@ -19,6 +19,14 @@ class User:
         self.updated_at = db_data["updated_at"]
 
     #! Create
+    @classmethod
+    def save(cls, data):
+        query = """
+            INSERT INTO users (name, email, password, created_at, updated_at)
+            VALUES (%(name)s, %(email)s, %(password)s, NOW(), NOW());
+        """
+        result = connectToMySQL(cls.DB).query_db(query, data)
+        return result
 
     #! Read
 
