@@ -35,6 +35,33 @@ def dash_page():
 #! Registration Post
 @app.post("/user/register")
 def reg_post():
+    # validation for reg
+    if not user.user.validate_register(request.form):
+        return redirect("/")
+    
+    # check if user_email exists in db
+    user_in_db = user.User.get_user_by_email(request.form["email"])
+    # if so, flash message
+    if user_in_db:
+        flash("Account already exists! Please log in.", "account_confirmed")
+        return redirect("/")
+    
+    print("Got Post Info")
+    
+    # hash pw
+    pw_hash = bcrypt.generate_password_hash(request.form["password"])
+    
+    # save post info
+    data = {
+        "name": request.form["name"],
+        "email": request.form["email"],
+        "password": pw_hash,
+    }
+    
+    user_id = user.User.save(data)
+    
+    # store user_id into sessions
+    session["user_id"] = user_id
     return redirect("/dashboard")
 
 

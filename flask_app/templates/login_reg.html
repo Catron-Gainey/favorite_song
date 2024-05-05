@@ -14,70 +14,138 @@
     <div class="container-fluid">
         <div class="row justify-content-md-center">
             <!-- REG FORM START -->
-            <form action="/user/register" class="form col-md-3 m-3">
+            <form action="/user/register" method="post" class="form col-md-3 m-3 pb-3 border border-black">
                 <p class="fs-2">Register</p>
 
+
+                <!-- FLASH START -->
+
+                <!-- ACCOUNT_CONFIRMED -->
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["account_confirmed"]) %}
+                <ul class="flashes text-success">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }} border border-success bg-success-subtle fw-bold rounded mb-4">{{ message
+                        }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
+                <!-- REG_INVALID -->
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["reg_invalid"]) %} <ul
+                    class="flashes text-danger">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }} alert alert-danger"><strong>Invalid</strong> - {{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
+                <!-- FLASH END -->
+
+
                 <!-- NAME -->
-                <div class="row mb-2 align-items-lg-center">
-                    <div class="col-md">
-                        <label for="name" class="form-label">Name:</label>
+
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["reg_name"]) %} <ul
+                    class="flashes text-danger">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
+                <div class="row mb-2 align-items-lg-center justify-content-md-between">
+                    <div class="col-auto">
+                        <label for="name" class="col-form-label">Name:</label>
                     </div>
-                    <div class="col-md">
+                    <div class="col-auto">
                         <input type="text" name="name" class="form-group">
                     </div>
                 </div>
+
                 <!-- EMAIL -->
-                <div class="row mb-2 align-items-lg-center">
-                    <div class="col-md">
-                        <label for="email" class="form-label">Email:</label>
+
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["reg_email"]) %} <ul
+                    class="flashes text-danger">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
+                <div class="row mb-2 align-items-lg-center justify-content-md-between">
+                    <div class="col-auto">
+                        <label for="email" class="col-form-label">Email:</label>
                     </div>
-                    <div class="col-md">
+                    <div class="col-auto">
                         <input type="text" name="email" class="form-group">
                     </div>
                 </div>
+
                 <!-- PASS -->
-                <div class="row mb-2 align-items-lg-center">
-                    <div class="col-md">
-                        <label for="password" class="form-label">Password:</label>
+
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["reg_pw"]) %} <ul
+                    class="flashes text-danger">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
+                <div class="row mb-2 align-items-lg-center justify-content-md-between">
+                    <div class="col-auto">
+                        <label for="password" class="col-form-label">Password:</label>
                     </div>
-                    <div class="col-md">
+                    <div class="col-auto">
                         <input type="password" name="password" class="form-group">
                     </div>
                 </div>
+
                 <!-- CONFIRM_PW -->
-                <div class="row mb-2 align-items-lg-center">
-                    <div class="col-md">
-                        <label for="confirm_pw" class="form-label">Confirm Password:</label>
+
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["reg_confirm_pw"]) %} <ul
+                    class="flashes text-danger">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
+                <div class="row mb-2 align-items-lg-center justify-content-md-between">
+                    <div class="col-auto">
+                        <label for="confirm_pw" class="col-form-label">Confirm<br>Password:</label>
                     </div>
-                    <div class="col-md">
+                    <div class="col-auto">
                         <input type="password" name="confirm_pw" class="form-group">
                     </div>
+                </div>
+
+                <!-- SUBMIT -->
+                <div class="col d-grid justify-content-md-end">
+                    <input type="submit" value="register" class="btn btn-success text-capitalize">
                 </div>
             </form>
             <!-- REG FORM END -->
 
 
             <!-- LOGIN FORM START -->
-            <form action="/user/login" class="form col-md-3 m-3">
+            <form action="/user/login" method="post" class="form col-md-3 m-3 pb-3 border border-black">
                 <p class="fs-2">Login</p>
 
                 <!-- EMAIL -->
-                <div class="row mb-2 align-items-lg-center">
-                    <div class="col-md">
-                        <label for="email" class="form-label">Email:</label>
+                <div class="row mb-2 align-items-lg-center justify-content-md-between">
+                    <div class="col-auto">
+                        <label for="email" class="col-form-label">Email:</label>
                     </div>
-                    <div class="col-md">
+                    <div class="col-auto">
                         <input type="text" name="email" class="form-group">
                     </div>
                 </div>
                 <!-- PASS -->
-                <div class="row mb-2 align-items-lg-center">
-                    <div class="col-md">
-                        <label for="password" class="form-label">Password:</label>
+                <div class="row mb-2 align-items-lg-center justify-content-md-between">
+                    <div class="col-auto">
+                        <label for="password" class="col-form-label">Password:</label>
                     </div>
-                    <div class="col-md">
+                    <div class="col-auto">
                         <input type="password" name="password" class="form-group">
                     </div>
+                </div>
+
+                <!-- LOGIN -->
+                <div class="col d-grid justify-content-md-end">
+                    <input type="submit" value="login" class="btn btn-success text-capitalize">
                 </div>
             </form>
             <!-- LOGIN FORM END -->

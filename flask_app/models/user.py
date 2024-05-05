@@ -35,3 +35,45 @@ class User:
     #! Delete
 
     #! Validations
+    @staticmethod
+    def validate_register(user):
+        is_valid = True;
+        
+        # all fields
+        if len(user["name"].strip()) == 0 and len(user["email"].strip()) == 0 and len(user["password"].strip()) == 0:
+            flash("All fields are required.", "reg_invalid")
+            is_valid = False
+            return is_valid
+        
+        # name field
+        if len(user["name"].strip()) < 2:
+            flash("Name must be at least 2 characters long.", "reg_name")
+            is_valid = False
+        elif len(user["name"].strip()) == 0:
+            flash("Name cannot be left blank.", "reg_name")
+            is_valid = False
+            
+        # email field
+        if not EMAIL_REGEX.match(user["email"]):
+            flash("Please provide a valid email.", "reg_email")
+            is_valid = False
+        elif len(user["email"].strip()) == 0:
+            flash("Email cannot be left blank.", "reg_email")
+            is_valid = False
+            
+        # password field
+        if len(user["password"].strip()) < 6:
+            flash("Password must be at least 6 characters long.", "reg_pw")
+            is_valid = False
+        elif len(user["password"].strip()) == 0:
+            flash("Password cannot be left blank.", "reg_pw")
+            is_valid = False
+            
+        # confirm_pw field
+        if len(user["confirm_pw"]) == 0:
+            flash("Please re-type password to confirm.", "reg_confirm_pw")
+            is_valid = False
+        elif user["confirm_pw"] != user["password"]:
+            flash("Password does not match.", "reg_pw")
+        
+        return is_valid
