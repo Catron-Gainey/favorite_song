@@ -7,3 +7,19 @@
 .form-label {
     margin-bottom: 0;
 }
+
+.flashes {
+    padding: 0;
+    margin: 0;
+}
+
+.flashes li {
+    list-style-position: inside;
+    list-style-type: none;
+    text-align: right;
+    padding: 5px 0px;
+}
+
+li.reg_invalid, li.login_invalid {
+    padding: 0px 5px;
+}

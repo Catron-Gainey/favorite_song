@@ -29,14 +29,13 @@ def dash_page():
 
 ############################################
 
-
 ### POST ROUTES ##################
 
 #! Registration Post
 @app.post("/user/register")
 def reg_post():
     # validation for reg
-    if not user.user.validate_register(request.form):
+    if not user.User.validate_register(request.form):
         return redirect("/")
     
     # check if user_email exists in db
@@ -68,6 +67,44 @@ def reg_post():
 #! Login Post
 @app.post("/user/login")
 def login_post():
+    # validation for login
+    if not user.User.validate_login(request.form):
+        return redirect("/")
+    
+    # fetch user_email 
+    user_in_db = user.User.get_user_by_email(request.form["email"])
+    # if not, flash message
+    if not user_in_db:
+        flash("The email and/or password you entered was incorrect. Please try again.", "error")
+        return redirect("/")
+    
+    # save user_email in sessions
+    session["email"] = request.form["email"]
+    
+    # pw check (if match with pw in db)
+    pw_check = bcrypt.check_password_hash(user_in_db.password, request.form["password"])
+    if not pw_check:
+        flash("Unable to process verification. Please try again.", "error")
+        return redirect("/")
+    
+    # store user into session
+    user_id = user_in_db.id
+    session["user_id"] = user_id
     return redirect("/dashboard")
 
 ############################################
+
+### DESTROY SESSION ########################
+
+#! clear session - temp button
+@app.get("/clear_session_temp")
+def destroy():
+    if "user_id" not in session:
+        return redirect("/")
+    
+    session.clear()
+    print("----- Session cleared. -----")
+    return redirect("/")
+
+############################################
+

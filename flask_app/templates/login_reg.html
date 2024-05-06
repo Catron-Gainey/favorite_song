@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row justify-content-md-center">
             <!-- REG FORM START -->
-            <form action="/user/register" method="post" class="form col-md-3 m-3 pb-3 border border-black">
+            <form action="/user/register" method="post" class="form col-md-3 m-4 p-4 border border-black">
                 <p class="fs-2">Register</p>
 
 
@@ -37,6 +37,7 @@
                     {% endfor %}
                 </ul>
                 {% endwith %}
+
                 <!-- FLASH END -->
 
 
@@ -121,10 +122,40 @@
 
 
             <!-- LOGIN FORM START -->
-            <form action="/user/login" method="post" class="form col-md-3 m-3 pb-3 border border-black">
+            <form action="/user/login" method="post" class="form col-md-3 m-4 p-4 border border-black">
                 <p class="fs-2">Login</p>
 
+                <!-- FLASH START -->
+
+                <!-- ACCOUNT_ERROR -->
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["error"]) %}
+                <ul class="flashes text-danger">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }} border border-success bg-success-subtle fw-bold rounded mb-4">{{ message
+                        }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
+                <!-- LOGIN_INVALID -->
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["login_invalid"]) %} <ul
+                    class="flashes text-danger">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }} alert alert-danger"><strong>Invalid</strong> - {{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
+
+                <!-- FLASH END -->
+
                 <!-- EMAIL -->
+
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["login_email"]) %} <ul
+                    class="flashes text-danger">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
                 <div class="row mb-2 align-items-lg-center justify-content-md-between">
                     <div class="col-auto">
                         <label for="email" class="col-form-label">Email:</label>
@@ -133,7 +164,16 @@
                         <input type="text" name="email" class="form-group">
                     </div>
                 </div>
+
                 <!-- PASS -->
+
+                {% with messages=get_flashed_messages(with_categories=true, category_filter=["login_pass"]) %} <ul
+                    class="flashes text-danger">
+                    {% for category, message in messages: %}
+                    <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endwith %}
                 <div class="row mb-2 align-items-lg-center justify-content-md-between">
                     <div class="col-auto">
                         <label for="password" class="col-form-label">Password:</label>

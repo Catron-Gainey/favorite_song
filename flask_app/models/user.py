@@ -22,17 +22,32 @@ class User:
     @classmethod
     def save(cls, data):
         query = """
-            INSERT INTO users (name, email, password, created_at, updated_at)
-            VALUES (%(name)s, %(email)s, %(password)s, NOW(), NOW());
+            INSERT INTO users (name, email, password)
+            VALUES (%(name)s, %(email)s, %(password)s);
         """
         result = connectToMySQL(cls.DB).query_db(query, data)
         return result
 
     #! Read
+    #!! Get user by email
+    @classmethod
+    def get_user_by_email(cls, email):
+        query = """
+            SELECT *
+            FROM users
+            WHERE email = %(email)s;
+        """
+        data = {
+            "email": email
+        }
+        user_data = connectToMySQL(cls.DB).query_db(query, data)
+        if len(user_data) < 1:
+            return False
+        return cls(user_data[0])
 
     #! Update
 
-    #! Delete
+    #! Delete        
 
     #! Validations
     @staticmethod
@@ -75,5 +90,30 @@ class User:
             is_valid = False
         elif user["confirm_pw"] != user["password"]:
             flash("Password does not match.", "reg_pw")
+        
+        return is_valid
+    
+    @staticmethod
+    def validate_login(user):
+        is_valid = True
+        
+        # all fields required.
+        if len(user["email"].strip()) == 0 and len(user["password"]) == 0:
+            flash("All fields required.", "login_invalid")
+            is_valid = False
+            return is_valid
+        
+        # email field
+        if not EMAIL_REGEX.match(user["email"]):
+            flash("Please provide a valid email.", "login_email")
+            is_valid = False
+        elif len(user["email"].strip()) == 0:
+            flash("Email field is required.", "login_email")
+            is_valid = False
+        
+        # password field
+        if len(user["password"].strip()) == 0:
+            flash("Password field is required.", "login_pass")
+            is_valid = False
         
         return is_valid
